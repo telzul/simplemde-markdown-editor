@@ -10,7 +10,7 @@ require("codemirror/addon/display/placeholder.js");
 require("codemirror/addon/selection/mark-selection.js");
 require("codemirror/mode/gfm/gfm.js");
 require("codemirror/mode/xml/xml.js");
-var CodeMirrorSpellChecker = require("codemirror-spell-checker");
+var CodeMirrorSpellChecker = require("../../../codemirror-spell-checker");
 var marked = require("marked");
 
 
@@ -1469,10 +1469,16 @@ SimpleMDE.prototype.render = function(el) {
 		backdrop = options.parsingConfig;
 		backdrop.name = "gfm";
 		backdrop.gitHubSpice = false;
-
-		CodeMirrorSpellChecker({
-			codeMirrorInstance: CodeMirror
-		});
+		if(options.customDict !== false) {
+			CodeMirrorSpellChecker({
+				codeMirrorInstance: CodeMirror,
+				customDict: options.customDict
+			});
+		} else {
+			CodeMirrorSpellChecker({
+				codeMirrorInstance: CodeMirror
+			});
+		}
 	} else {
 		mode = options.parsingConfig;
 		mode.name = "gfm";
@@ -2024,5 +2030,7 @@ SimpleMDE.prototype.toTextArea = function() {
 		this.clearAutosavedValue();
 	}
 };
+
+SimpleMDE.CodeMirror = CodeMirror;
 
 module.exports = SimpleMDE;
